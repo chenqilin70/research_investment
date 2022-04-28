@@ -1,0 +1,17 @@
+<sqls>
+    <createBatchIssuanceDataset>
+        <![CDATA[
+            create table  BatchIssuanceDataset as select DISTINCT datasetMd5 from BatchIssuance
+        ]]>
+    </createBatchIssuanceDataset>
+    <dropBatchIssuanceDataset>
+        <![CDATA[
+            drop table  BatchIssuanceDataset
+        ]]>
+    </dropBatchIssuanceDataset>
+    <getDownloadedBatchIssuanceDataset>
+        <![CDATA[
+            select datasetMd5 from BatchIssuanceDataset
+        ]]>
+    </getDownloadedBatchIssuanceDataset>
+</sqls>

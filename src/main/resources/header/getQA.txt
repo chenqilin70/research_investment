@@ -1,0 +1,11 @@
+Accept: application/json, text/javascript, */*; q=0.01
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9
+Connection: keep-alive
+Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+Cookie: ctx=/ircs; uudid=cms6b7a6f6e-10ad-7bb3-8140-ff0fc557fa8c; radius=220.115.60.240; route=5b5a1bf6e97e3db6d9fdd6c70ad993f1; JSESSIONID=cf7f139b-0c22-4014-8035-3b8137d787f2
+Host: irm.cninfo.com.cn
+Origin: http://irm.cninfo.com.cn
+Referer: http://irm.cninfo.com.cn/ircs/company/companyDetail?stockcode=002007&orgId=gssz0002007
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36
+X-Requested-With: XMLHttpRequest

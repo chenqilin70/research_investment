@@ -1,0 +1,15 @@
+<sqls>
+    <createTable>
+        <![CDATA[
+            CREATE TABLE {tableName}(
+                {columns}
+            )
+        ]]>
+    </createTable>
+
+    <truncateTable>
+        <![CDATA[
+            delete from {tableName}
+        ]]>
+    </truncateTable>
+</sqls>

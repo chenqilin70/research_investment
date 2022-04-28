@@ -1,0 +1,49 @@
+{
+  "getAnnouncement": {
+    "url":"https://xueqiu.com/statuses/stock_timeline.json",
+    "type": "GET",
+    "param": {
+      "symbol_id": null,
+      "count": 50,
+      "page": null,
+      "source": "公告"
+    }
+  },
+  "getBatchIssuance": {
+    "url": "https://bio.nifdc.org.cn/pqf/search.do",
+    "type": "GET",
+    "param": {
+      "formAction": "pqfGs"
+    }
+  },
+  "getSZQA": {
+    "url": "http://irm.cninfo.com.cn/ircs/company/question",
+    "type": "POST",
+    "param": {
+      "stockcode": null,
+      "orgId": null,
+      "pageSize": 10,
+      "pageNum": 1
+    }
+  },
+  "getOrgId": {
+    "url": "http://irm.cninfo.com.cn/ircs/company/companyDetail",
+    "type": "GET",
+    "param": {
+      "stockcode": null
+    }
+  },
+  "getSHQA": {
+    "url": "http://sns.sseinfo.com/ajax/userfeeds.do",
+    "type": "GET",
+    "param": {
+      "typeCode": "company",
+      "type": "11",
+      "pageSize": "10"
+    }
+  },
+  "getUid": {
+    "url": "http://sns.sseinfo.com/ajax/getCompany.do",
+    "type": "POST"
+  }
+}

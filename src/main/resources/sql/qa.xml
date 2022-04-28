@@ -1,0 +1,16 @@
+<sqls>
+    <exportQA>
+        <![CDATA[
+            select
+                *
+            from
+                HuDongYiQA
+            where
+                stockCode ='{stockCode}' and
+                (question like '%{searchStr}%' or answer  like '%{searchStr}%') and
+                (answer !='' and answer is not null)
+            order by
+                updateDate desc
+        ]]>
+    </exportQA>
+</sqls>

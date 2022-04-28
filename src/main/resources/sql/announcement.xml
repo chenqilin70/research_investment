@@ -1,0 +1,64 @@
+<sqls>
+    <undownloadAnn>
+        <![CDATA[
+            select * from announcement where exist=0
+        ]]>
+    </undownloadAnn>
+    <setAnnExist>
+        <![CDATA[
+            update announcement set exist=1 where id='{id}'
+        ]]>
+    </setAnnExist>
+    <setAnnFilename>
+        <![CDATA[
+            update announcement set fileName='{fileName}' where id='{id}'
+        ]]>
+    </setAnnFilename>
+    <setAnnDownloadError>
+        <![CDATA[
+            update announcement set exist=2 where id='{id}'
+        ]]>
+    </setAnnDownloadError>
+    <searchAnnouncement>
+        <![CDATA[
+            select * from announcement where stockCode='{stockCode}' and (  fileName like '%{searchStr}%' or replace( replace(content , x'0A','') ,x'0D','') like '%{searchStr}%'  )
+        ]]>
+    </searchAnnouncement>
+    <noneContentAnn>
+        <![CDATA[
+            select * from announcement where content is null or content = ''
+        ]]>
+    </noneContentAnn>
+    <batchExistAnn>
+        <![CDATA[
+            select count(distinct id) as c from announcement where id in ({inStr})
+        ]]>
+    </batchExistAnn>
+
+    <annCountByStockCode>
+        <![CDATA[
+            select count(distinct id) as c from Announcement where stockCode  = '{stockCode}'
+        ]]>
+    </annCountByStockCode>
+    <fileDisable>
+        <![CDATA[
+            select dir || '\' || fileName as file from Announcement where stockCode  = '{stockCode}'
+        ]]>
+    </fileDisable>
+    <equalFilename>
+        <![CDATA[
+            select dir,fileName,COUNT(*) AS C from Announcement  GROUP BY dir,fileName HAVING COUNT(*)>1
+        ]]>
+    </equalFilename>
+    <setAnnUnExist>
+        <![CDATA[
+            update announcement set exist=0 where dir='{dir}' and fileName='{fileName}'
+        ]]>
+    </setAnnUnExist>
+    <unParseAnn>
+        <![CDATA[
+            select * from  Announcement where content is null or content ='ERROR'
+        ]]>
+    </unParseAnn>
+
+</sqls>
