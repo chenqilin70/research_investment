@@ -42,7 +42,7 @@
     </annCountByStockCode>
     <fileDisable>
         <![CDATA[
-            select dir || '\' || fileName as file from Announcement where stockCode  = '{stockCode}'
+            select dir || '\' || fileName as file,id from Announcement where stockCode  = '{stockCode}'
         ]]>
     </fileDisable>
     <equalFilename>

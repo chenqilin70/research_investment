@@ -39,16 +39,16 @@ import java.util.stream.Collectors;
 @Slf4j
 @Data
 public class CrawlAnnouncementItem {
-    public static final String resultDir = "D:\\tempFile\\research_investment_result\\announcements";
+    public static final String resultDir = "D:\\invest\\research_investment_result\\announcements";
     public static final SnowballDao snowballDao = new SnowballDao();
     public static final SqlGetter sqlGetter = new SqlGetter("announcement");
 
     public static void main(String[] args) {
 
-        log.info("start query all the basic information announcement");
-
         String stockCode=args[0];
         String stockName=args[1];
+
+        log.info(stockName+"--->start query all the basic information announcement");
 
         boolean exist = MetaUtil.getTables(DSFactory.get()).stream().map(t -> t.toLowerCase()).collect(Collectors.toList()).contains(Announcement.class.getSimpleName().toLowerCase());
 
@@ -61,8 +61,10 @@ public class CrawlAnnouncementItem {
 
         List<Announcement> ann = snowballDao.getAnnouncement(stockCode);
 
+
         List<Announcement> notexistAnn = ForkJoinExecutor.exec(new AnnNotExistTask(ann, 25, stockName), 50, 60);
 
+        
         Integer count = notexistAnn.stream().map(a -> {
             int result = 0;
             try {
@@ -73,7 +75,7 @@ public class CrawlAnnouncementItem {
             return result;
         }).reduce((a, b) -> a + b).orElse(0);
 
-        log.info("end query all the basic information announcement,query count:" + ann.size() + "，save count:" + count );
+        log.info(stockName+"--->end query all the basic information announcement,query count:" + ann.size() + "，save count:" + count );
 
     }
 
@@ -97,10 +99,10 @@ public class CrawlAnnouncementItem {
             }
             Long batchExistCount = entity.getLong("c");
             if(batchExistCount>=ann.stream().map(a->a.getId()).distinct().count()){
-                return new ArrayList<>();
+                return new ArrayList();
             }else{
                 return ann.stream().map(a -> {
-                    List<Announcement> result = new ArrayList<>();
+                    List<Announcement> result = new ArrayList();
                     try {
                         long annCount = Db.use().count(Entity.create(Announcement.class.getSimpleName()).set("id", a.getId()));
                         if(annCount==0){

@@ -41,7 +41,7 @@ public class SnowballDao extends BaseDao{
         TimeInterval timer = DateUtil.timer();
         ExecutorService pool = Executors.newFixedThreadPool(50);
         CompletionService<List<Announcement>> service = new ExecutorCompletionService<>(pool);
-        List<Announcement> anns=new ArrayList<>();
+        List<Announcement> anns=new ArrayList();
         try {
             Integer maxPage=getMaxPage(stock);
             for(int page=1;page<=maxPage;page++){
@@ -79,7 +79,7 @@ public class SnowballDao extends BaseDao{
      * @return
      */
     public  List<Announcement> getAnnouncementPage(String stock , int page){
-        List<Announcement> anns=new ArrayList<>();
+        List<Announcement> anns=new ArrayList();
         DataAccess dataAccess = new DataAccess().load("getAnnouncement");
         dataAccess.getParam().put("page",page+"");
         dataAccess.getParam().put("symbol_id",stock);

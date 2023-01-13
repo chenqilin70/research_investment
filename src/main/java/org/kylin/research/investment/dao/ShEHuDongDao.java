@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 public class ShEHuDongDao extends BaseDao{
 
     public List<HuDongYiQA> getStockAllQA(Stock stock){
-        List<HuDongYiQA> qas = new ArrayList<>();
+        List<HuDongYiQA> qas = new ArrayList();
         DataAccess dataAccess=new DataAccess();
         String uid = getUid(stock);
         dataAccess.load("getSHQA").getParam().putAll(MapCreator.SS.create( "uid" , uid ));

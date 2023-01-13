@@ -40,14 +40,14 @@ import java.util.List;
 @Slf4j
 public class ValidateAnnouncement {
 
-    public static List<Stock> stockList= new ArrayList<>(){{
+    public static List<Stock> stockList= new ArrayList(){{
         PropsUtil.get("stock.properties").forEach((k,v)->add(new Stock(k.toString(),v.toString())));
     }};
     public static final SqlGetter sqlGetter = new SqlGetter("announcement");
 
     public static SnowballDao snowballDao=new SnowballDao();
 
-    public static File dir = new File("D:\\tempFile\\research_investment_result\\announcements");
+    public static File dir = new File("D:\\invest\\research_investment_result\\announcements");
 
     public static void main(String[] args) throws SQLException {
         for(Stock s:stockList){
@@ -82,15 +82,16 @@ public class ValidateAnnouncement {
     @Test
     public void fileDisable() throws SQLException {
         for(Stock s:stockList){
-            if(!"SH600167".equals(s.getCode())){
-                continue;
-            }
             SqlGetter.Sql sql = sqlGetter.getSql("fileDisable", MapCreator.SS.create("stockCode",s.getCode()));
             List<Entity> lines = Db.use().query(sql.getSql());
             for(Entity entity : lines){
                 File f=new File(entity.getStr("file"));
                 if(!FileUtil.exist(f)){
-                    log.info(f.getAbsolutePath());
+                    log.info(entity.getInt("id")+"==>"+f.getAbsolutePath());
+                    Db.use().update(
+                            Entity.create(Announcement.class.getSimpleName()).set("content",null).set("exist",0),
+                            Entity.create(Announcement.class.getSimpleName()).set("id",entity.getInt("id"))
+                    );
                 }
             }
         }
@@ -133,4 +134,24 @@ public class ValidateAnnouncement {
         }
 
     }
+
+    /**
+     * 查询磁盘中的空文件
+     */
+    @Test
+    public void nullFile(){
+        System.out.println("a\\b/c");
+        System.out.println("a\\b/c".replaceAll("\\\\","-").replaceAll("/","-"));
+//        List<File> files = FileUtil.loopFiles(dir);
+//        int count=0;
+//        for(File f:files){
+//            if(FileUtil.size(f)==0 || FileUtil.size(f)==1){
+//                log.info("即将删除:"+f.getAbsolutePath());
+//                FileUtil.del(f);
+//                count++;
+//            }
+//        }
+//        log.info("已成功删除"+count+"个文件");
+    }
+
 }

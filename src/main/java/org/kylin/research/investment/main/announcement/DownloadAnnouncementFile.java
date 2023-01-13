@@ -8,12 +8,17 @@ package org.kylin.research.investment.main.announcement;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.db.Db;
 import cn.hutool.db.Entity;
 import jodd.http.HttpRequest;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.kylin.research.investment.entity.Announcement;
+import org.kylin.research.investment.entity.da.DataAccess;
 import org.kylin.research.investment.util.BaseRecursiveTask;
 import org.kylin.research.investment.util.ForkJoinExecutor;
 import org.kylin.research.investment.util.MapCreator;
@@ -24,6 +29,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -58,7 +64,10 @@ public class DownloadAnnouncementFile {
             return perIncrementList.stream().map(a ->{
                 Integer integer = TryUtil.runTry(5, 5, 0, () -> {
                     int result = 0;
-                    File targetFile = new File(FileUtil.mkdir(a.getDir()), a.getFileName());
+                    File targetFile = new File(FileUtil.mkdir(a.getDir()), a.getFileName().replaceAll("\\\\","-").replaceAll("/","-")
+                            .replaceAll("\\?","-").replaceAll(">","-").replaceAll("<","-").replaceAll("\\*","-").replaceAll(":","-"));
+                    byte[] fileBytes = HttpRequest.get(a.getUrl()).timeout(10 * 60 * 1000).connectionTimeout(10 * 60 * 1000).send().bodyBytes();
+
                     if (FileUtil.exist(targetFile)) {
                         ThreadUtil.sleep(RandomUtil.randomLong(100,200));
                         targetFile = new File(FileUtil.mkdir(a.getDir()), FileUtil.mainName(targetFile)+"_"+new Date().getTime()+"."+FileUtil.getSuffix(targetFile));
@@ -67,7 +76,42 @@ public class DownloadAnnouncementFile {
                             Db.use().execute(sqlGetter.getSql("setAnnFilename", MapCreator.SS.create("id", a.getId(),"fileName",targetFile.getName())).getSql());
                         }
                     }
-                    byte[] fileBytes = HttpRequest.get(a.getUrl()).timeout(3 * 60 * 1000).connectionTimeout(3 * 60 * 1000).send().bodyBytes();
+                    if(!a.getFileName().equals(targetFile.getName())){
+                        log.info("文件名已被修改");
+                        Db.use().execute(sqlGetter.getSql("setAnnFilename", MapCreator.SS.create("id", a.getId(),"fileName",targetFile.getName())).getSql());
+                    }
+
+
+                    while(true){
+                        try {
+                            if(fileBytes.length!=0 && fileBytes.length < 600 && targetFile.getName().endsWith("pdf") && new String(fileBytes).contains("</a>")){
+                                log.info("数据过少，怀疑是html："+new String(fileBytes));
+                                Elements as = Jsoup.parse(new String(fileBytes)).getElementsByTag("a");
+                                if(as!=null && as.size()>0){
+                                    Element element = as.get(0);
+                                    String href = element.attr("HREF");
+                                    if(StrUtil.isNotBlank(href)){
+                                        log.info("访问新链接："+href);
+                                        fileBytes = HttpRequest.get(href).timeout(10 * 60 * 1000).connectionTimeout(10 * 60 * 1000).send().bodyBytes();
+                                        log.info("新数据为："+fileBytes.length);
+                                    }else{
+                                        break;
+                                    }
+                                }else{
+                                    break;
+                                }
+                            }else{
+                                break;
+                            }
+                        }catch (Throwable t){
+                            log.error("解析html类型pdf报错，打断循环",t);
+                            break;
+                        }
+
+                    }
+
+
+
                     FileUtil.writeBytes(fileBytes, targetFile);
                     log.info("下载文件："+a.getUrl());
                     log.info("文件名："+targetFile.getName());

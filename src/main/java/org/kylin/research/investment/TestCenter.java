@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class TestCenter {
     public static void main(String[] args) {
-        File file = new File("D:\\tempFile\\research_investment_result\\SearchAnnouncement\\20220412-224943_度报告\\fileName");
+        File file = new File("D:\\invest\\research_investment_result\\SearchAnnouncement\\20220412-224943_度报告\\fileName");
         List<String> deleteName = Arrays.asList("正文", "摘要", "督导","披露","独立意见","提示性","更正公告","补充");
         Arrays.stream(file.listFiles()).filter(f->deleteName.stream().map(s->f.getName().contains(s)).reduce((a,b)->a || b).get()).forEach(f->{
             System.out.println("删除"+f.getName());

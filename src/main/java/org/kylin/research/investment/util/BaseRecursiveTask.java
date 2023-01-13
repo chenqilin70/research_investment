@@ -36,8 +36,8 @@ public abstract class BaseRecursiveTask<D,R> extends RecursiveTask<R> {
         } else {
             // 如果任务大于阈值，就分裂成两个子任务计算
             long middle = datas.size() / 2;
-            List<D> leftList = new ArrayList<>();
-            List<D> rightList = new ArrayList<>();
+            List<D> leftList = new ArrayList();
+            List<D> rightList = new ArrayList();
 
             long i = 0;
             for (D data : datas) {

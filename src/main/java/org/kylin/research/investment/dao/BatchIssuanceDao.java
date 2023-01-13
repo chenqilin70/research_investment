@@ -64,7 +64,7 @@ public class BatchIssuanceDao extends BaseDao{
     public List<MechanismPageDataAccess> getAllMechanismPageDA()  {
         log.info("开始：获取所有机构页面的DataAccess");
         TimeInterval timer = DateUtil.timer();
-        List<MechanismPageDataAccess> result=new ArrayList<>();
+        List<MechanismPageDataAccess> result=new ArrayList();
         DataAccess mechanismListDA = new DataAccess().load("getBatchIssuance");
         Document body = Jsoup.parse(getBodyText(mechanismListDA));
         Elements tds = body.select("body>table>tbody>tr>td>table>tbody>tr>td>table>tbody>tr>td");
@@ -97,7 +97,7 @@ public class BatchIssuanceDao extends BaseDao{
         List<BatchIssuanceDataAccess> result=allMechanismPageDA.parallelStream().map(da->{
             Document body = Jsoup.parse(getBodyText(da));
             Elements as = body.select("a[href^=\"search.do?\"]");
-            List<BatchIssuanceDataAccess> subResult=new ArrayList<>();
+            List<BatchIssuanceDataAccess> subResult=new ArrayList();
             for(Element a:as){
                 BatchIssuanceDataAccess batchIssuanceDataAccess = ((BatchIssuanceDataAccess) new BatchIssuanceDataAccess()
                         .load(URLUtil.url(da.getUrl() + "" + a.attr("href").substring(a.attr("href").indexOf("?")))))
@@ -109,7 +109,7 @@ public class BatchIssuanceDao extends BaseDao{
                 }
             }
             return subResult;
-        }).reduce((a,b)->new ArrayList<BatchIssuanceDataAccess>(){{addAll(a);addAll(b);}}).orElse(new ArrayList<>());
+        }).reduce((a,b)->new ArrayList<BatchIssuanceDataAccess>(){{addAll(a);addAll(b);}}).orElse(new ArrayList());
         log.info("结束：获取所有批签发数据集的DataAccess，耗时："+timer.intervalSecond()+"秒");
         return result;
     }
@@ -140,7 +140,7 @@ public class BatchIssuanceDao extends BaseDao{
         List<Callable<List<BatchIssuance>>> allCallable = allBatchIssuanceDatasetDA.stream().map(d -> new BatchIssuanceCallable(d)).collect(Collectors.toList());
         List<Future<List<BatchIssuance>>> futures = executorService.invokeAll(allCallable);
         executorService.shutdown();
-        List<BatchIssuance> result=new ArrayList<>();
+        List<BatchIssuance> result=new ArrayList();
         for(Future<List<BatchIssuance>> f : futures)  result.addAll(f.get());
         log.info("结束：获取所有批签发数据项，耗时："+timer.intervalSecond()+"秒");
         return result;
@@ -189,7 +189,7 @@ public class BatchIssuanceDao extends BaseDao{
         }
         @Override
         public List<BatchIssuance> call() throws Exception {
-            List<BatchIssuance> result=new ArrayList<>();
+            List<BatchIssuance> result=new ArrayList();
             String bodyText = getBodyText(d);
             Document doc = Jsoup.parse(bodyText);
             Elements columnElements = doc.select("thead>tr>td");

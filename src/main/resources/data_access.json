@@ -45,5 +45,53 @@
   "getUid": {
     "url": "http://sns.sseinfo.com/ajax/getCompany.do",
     "type": "POST"
+  },
+  "getReportPeriod": {
+    "url": "https://emweb.securities.eastmoney.com/PC_HSF10/NewFinanceAnalysis/{0}DateAjaxNew",
+    "type": "GET",
+    "param": {
+      "companyType": 4
+    }
+  },
+  "getFinanceData": {
+    "url": "https://emweb.securities.eastmoney.com/PC_HSF10/NewFinanceAnalysis/{0}AjaxNew",
+    "type": "GET",
+    "param": {
+      "companyType": 4,
+      "reportType": 1
+    }
+  },
+  "getFinanceZYZBData": {
+    "url": "https://emweb.securities.eastmoney.com/PC_HSF10/NewFinanceAnalysis/ZYZBAjaxNew",
+    "type": "GET",
+    "param": {
+      "type": 1
+    }
+  },
+  "getAllStock": {
+    "url": "http://93.push2.eastmoney.com/api/qt/clist/get",
+    "type": "GET",
+    "param": {
+      "cb":"jQuery112406302779845698335_1660460499272",
+      "pn":"1",
+      "pz":"428790",
+      "po":"1",
+      "np":"1",
+      "ut":"bd1d9ddb04089700cf9c27f6f7426281",
+      "fltt":"2",
+      "invt":"2",
+      "wbp2u":"4746005475148646|0|1|0|web",
+      "fid":"f3",
+      "fs":"m:0 t:6,m:0 t:80,m:1 t:2,m:1 t:23,m:0 t:81 s:2048",
+      "fields":"f12",
+      "_":"1660460499316"
+    }
+  },
+  "getShare": {
+    "url": "https://emweb.securities.eastmoney.com/PC_HSF10/BonusFinancing/PageAjax",
+    "type": "GET",
+    "param": {
+      "code":"SZ003022"
+    }
   }
 }

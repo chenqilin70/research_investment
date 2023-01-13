@@ -33,9 +33,9 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public class SearchAnnouncement {
-    public static final String resultDir="D:\\tempFile\\research_investment_result\\SearchAnnouncement";
+    public static final String resultDir="D:\\invest\\research_investment_result\\SearchAnnouncement";
     public static final SnowballDao snowballDao=new SnowballDao();
-    public static List<Stock> stockList= new ArrayList<>(){{
+    public static List<Stock> stockList= new ArrayList(){{
         PropsUtil.get("stock.properties").forEach((k,v)->add(new Stock(k.toString(),v.toString())));
     }};
     public static final SqlGetter sqlGetter = new SqlGetter("announcement");

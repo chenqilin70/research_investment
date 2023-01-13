@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  */
 public class SearchSHQA {
 
-    public static List<Stock> stockList= new ArrayList<>(){{
+    public static List<Stock> stockList= new ArrayList(){{
         PropsUtil.get("stock.properties").forEach((k, v)->add(new Stock(k.toString(),v.toString())));
     }};
     public static ShEHuDongDao shEHuDongDao=new ShEHuDongDao();

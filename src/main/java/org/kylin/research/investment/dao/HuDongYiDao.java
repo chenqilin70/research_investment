@@ -25,6 +25,7 @@ import org.kylin.research.investment.util.SqliteUtil;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,7 +40,7 @@ import java.util.stream.Collectors;
 public class HuDongYiDao  extends BaseDao{
 
     public List<HuDongYiQA> getStockAllQA(Stock stock){
-        List<HuDongYiQA> qas = new ArrayList<>();
+        List<HuDongYiQA> qas = new ArrayList();
         DataAccess dataAccess=new DataAccess();
         dataAccess.load("getSZQA").getParam().putAll(MapCreator.SS.create("stockcode",stock.getCode().substring(2),"orgId",getOrgId(stock)));
         int page=1;

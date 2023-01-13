@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ExportQA {
     public static final SqlGetter sqlGetter = new SqlGetter("qa");
-    public static final File resultDir=new File("D:\\tempFile\\research_investment_result\\ExportQA");
+    public static final File resultDir=new File("D:\\invest\\research_investment_result\\ExportQA");
     public static void main(String[] args) throws SQLException {
         while(true){
             Stock stock = SearchAnnouncement.getStock();

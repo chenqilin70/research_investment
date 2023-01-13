@@ -21,7 +21,7 @@ import java.util.List;
 @Slf4j
 public class InitAnnouncement {
 
-    public static List<Stock> stockList= new ArrayList<>(){{
+    public static List<Stock> stockList= new ArrayList(){{
         PropsUtil.get("stock.properties").forEach((k, v)->add(new Stock(k.toString(),v.toString())));
     }};
 
@@ -30,7 +30,7 @@ public class InitAnnouncement {
             CrawlAnnouncementItem.main(new String[]{stock.getCode(),stock.getName()});
         }
         DownloadAnnouncementFile.main(new String[]{});
-        ParseAnnouncementContent.main(new String[]{});
+//        ParseAnnouncementContent.main(new String[]{});
     }
 
 }
