@@ -92,6 +92,7 @@ public class ValidateAnnouncement {
                             Entity.create(Announcement.class.getSimpleName()).set("content",null).set("exist",0),
                             Entity.create(Announcement.class.getSimpleName()).set("id",entity.getInt("id"))
                     );
+//                    Db.use().del(Announcement.class.getSimpleName(),"id",entity.getInt("id"));
                 }
             }
         }
@@ -140,18 +141,18 @@ public class ValidateAnnouncement {
      */
     @Test
     public void nullFile(){
-        System.out.println("a\\b/c");
-        System.out.println("a\\b/c".replaceAll("\\\\","-").replaceAll("/","-"));
-//        List<File> files = FileUtil.loopFiles(dir);
-//        int count=0;
-//        for(File f:files){
-//            if(FileUtil.size(f)==0 || FileUtil.size(f)==1){
-//                log.info("即将删除:"+f.getAbsolutePath());
-//                FileUtil.del(f);
-//                count++;
-//            }
-//        }
-//        log.info("已成功删除"+count+"个文件");
+//        File file = new File("D:\\invest\\research_investment_result\\announcements\\时代天使\\20210526_时代天使_申请版本（第一次呈交）_180902318.pdf");
+//        System.out.println(FileUtil.size(file));
+        List<File> files = FileUtil.loopFiles(dir);
+        int count=0;
+        for(File f:files){
+            if(FileUtil.size(f)<2100){//2KB以下的默认有问题
+                log.info("即将删除:"+f.getAbsolutePath());
+                FileUtil.del(f);
+                count++;
+            }
+        }
+        log.info("已成功删除"+count+"个文件");
     }
 
 }

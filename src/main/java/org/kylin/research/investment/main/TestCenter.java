@@ -26,9 +26,9 @@ public class TestCenter {
      */
     @Test
     public void annualizedRateOfReturn(){
-        Double start= 9.974d;
-        Double end =32.58d;
-        Double year = 4d;
+        Double start= 1d;
+        Double end =1.55d;
+        Double year = 2d;
 
         String rate = new BigDecimal((Math.pow(end / start, 1.000/year)-1)*100).setScale(4, RoundingMode.HALF_UP).toString();
         System.out.println(rate);
@@ -76,6 +76,32 @@ public class TestCenter {
         for(int i=0;i<10;i++){
             start=start*(1+rate)+shouru*(1+(rate/2));
             System.out.println(1+i+"\t"+start);
+        }
+    }
+
+    /**
+     * 收回本金模型
+     */
+    @Test
+    public void principalRecovery(){
+        double start = 1;
+        double rate = 0.07;
+        double shouyi=0;
+        for(int i=0;i<20;i++){
+            shouyi=shouyi+(start*rate);
+            System.out.println(1+i+"\t"+shouyi);
+        }
+    }
+
+    /**
+     * 目标股息模型
+     */
+    @Test
+    public void targetDivvy(){
+        double targetDivvy=20;
+        for(int b=100;b<500;b=b+10){
+            double  rate = new BigDecimal((targetDivvy/b)*100).setScale(2,RoundingMode.HALF_UP).doubleValue();
+            System.out.println(b+"w本金，需A股股息率"+rate+"%,需港股股息率"+new BigDecimal((rate/0.8)).setScale(2,RoundingMode.HALF_UP)+"%");
         }
     }
 }
